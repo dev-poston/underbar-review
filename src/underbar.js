@@ -237,6 +237,21 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    iterator = iterator || _.identity;
+    if (iterator) {
+      for (var i = 0; i < collection.length; i++) {
+        if (iterator(collection[i])) {
+          return true;
+        }
+      }
+    } else {
+      for ( var i = 0; i < collection.length; i ++) {
+        if (collection[i] === true) {
+          return true;
+        }
+      }
+    }
+    return false;
   };
 
 
