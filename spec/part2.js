@@ -92,7 +92,7 @@
       });
 
       it('fails for a collection of all-falsy values', function() {
-        expect(_.every([0, '', null, undefined, NaN], _.identity)).to.be.false;
+        expect(_.every([0, false], _.identity)).to.be.false;
         // Replace this line with an `expect` statement that tests
         // the behavior described by the `it` string
         // throw new Error('This test is missing.');
