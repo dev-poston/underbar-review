@@ -287,11 +287,7 @@
   // exists in obj
   _.defaults = function(obj) {
     var object = arguments[0];
-    //if statement- if object of the key alreasy exist
-    //we wont assign it (iterate over the arguments)
-    //iterate over the aruments list
-      //iterate over the variable object
-      //if objectof key is undefine
+
     for (var i = 0; i < arguments.length; i++) {
       for (var key in arguments[i]) {
         if (object[key] === undefined) {
@@ -345,6 +341,14 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var obj = {};
+    return function (args) {
+      args = JSON.stringify(arguments);
+      if (obj[args] === undefined) {
+        obj[args] = func.apply(this, arguments);
+      }
+      return obj[args];
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
