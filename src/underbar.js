@@ -274,15 +274,35 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var object = arguments[0];
+
     for (var i = 0; i < arguments.length; i++) {
-      arguments[0] = arguments[i];
+      Object.assign(object, arguments[i]);
     }
+
+    return object;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var object = arguments[0];
+    //if statement- if object of the key alreasy exist
+    //we wont assign it (iterate over the arguments)
+    //iterate over the aruments list
+      //iterate over the variable object
+      //if objectof key is undefine
+    for (var i = 0; i < arguments.length; i++) {
+      for (var key in arguments[i]) {
+        if (object[key] === undefined) {
+          object[key] = arguments[i][key];
+        }
+      }
+    }
+    return object;
   };
+
+
 
 
   /**
