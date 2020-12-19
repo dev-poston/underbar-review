@@ -411,20 +411,24 @@
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
     var arr = [];
-    for (var i = 0; i < collection.length; i++) {
-      if (typeof collection[i] === 'string') {
-        //iterator = collection[i][iterator];
-        console.log(iterator)
-        collection.sort();
-        arr.push(collection[i]);
-        //console.log(arr);
-      } else {
+    _.each(collection, function(item) {
+      if (typeof item === 'object') {
+        collection.sort(function(a, b) {
+          return iterator(a) - iterator(b);
+        });
+      } else if (typeof item === 'number') {
         collection.sort(function(a, b) {
           return a - b;
         });
-        arr.push(collection[i]);
+      } else if (typeof item === 'string') {
+        collection.sort(function(a, b) {
+          return a[iterator] - b[iterator];
+        });
       }
-    }
+    });
+    _.each(collection, function(item) {
+      arr.push(item);
+    });
     return arr;
   };
 
@@ -433,7 +437,25 @@
   //
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
+
+
+  // if j is at the end of iteration, or if j is equal to arg[0].length???
+  // [['moe, 'larry', 'curly'], [30, 40, 50], [true]]
   _.zip = function() {
+
+    var arrResult = [];
+    var prepResult = [];
+
+    for (var i = 0; i < arguments.length; i++) { //<== arguments
+      var arg = arguments[i];
+      for (var j = 0; j < arguments[i].length; j++) { //<== contents of arguments
+        prepResult.push(arguments[i][j]);
+        break;
+      }
+      arrResult.push(prepResult);
+    }
+    //console.log('results:', arrResult);
+    return arrResult;
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
