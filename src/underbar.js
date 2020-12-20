@@ -440,21 +440,26 @@
 
 
   // if j is at the end of iteration, or if j is equal to arg[0].length???
+
   // [['moe, 'larry', 'curly'], [30, 40, 50], [true]]
   _.zip = function() {
-
+    var argSize = arguments[0].length;
     var arrResult = [];
     var prepResult = [];
-
-    for (var i = 0; i < arguments.length; i++) { //<== arguments
-      var arg = arguments[i];
-      for (var j = 0; j < arguments[i].length; j++) { //<== contents of arguments
-        prepResult.push(arguments[i][j]);
-        break;
+    for (var h = 0; h < arguments.length; h++) {
+      for (var i = 0; i < arguments.length; i++) { //<== arguments
+        for (var j = h; j < arguments[i].length; j++) { //<== contents of arguments
+          prepResult.push(arguments[i][j]);
+          break;
+        }
+      }
+      i = 0;
+      while (prepResult.length < argSize) {
+        prepResult.push(undefined);
       }
       arrResult.push(prepResult);
+      prepResult = [];
     }
-    //console.log('results:', arrResult);
     return arrResult;
   };
 
