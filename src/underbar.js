@@ -378,7 +378,6 @@
       var rnd = Math.random() - 0.5;
       return rnd;
     });
-
     return copy;
   };
 
@@ -410,7 +409,6 @@
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
-    var arr = [];
     _.each(collection, function(item) {
       if (typeof item === 'object') {
         collection.sort(function(a, b) {
@@ -426,10 +424,7 @@
         });
       }
     });
-    _.each(collection, function(item) {
-      arr.push(item);
-    });
-    return arr;
+    return collection;
   };
 
   // Zip together two or more arrays with elements of the same index
@@ -467,12 +462,55 @@
   // The new array should contain all elements of the multidimensional array.
   //
   // Hint: Use Array.isArray to check if something is an array
-  _.flatten = function(nestedArray, result) {
+  _.flatten = function(nestedArray, result = []) {
+    //[1, [2], [3, [[[4]]]]]
+    //[1, 2, 3, 4]
+
+    return _.reduce(nestedArray, function(result, item) {
+      if (Array.isArray(item)) {
+        _.flatten(item, result); //<== not passing args???
+      } else {
+        result.push(item);
+      }
+      return result;
+    }, result);
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
+  //----------------------------------------------------
+
+  // _.contains = function(collection, target) {
+  //   return _.reduce(collection, function(wasFound, item) {
+  //     if (wasFound) {
+  //       return true;
+  //     }
+  //     return item === target;
+  //   }, false);
+  // };
+
+  //-------------------------------------------
+
+  // ['moe', 'curly', 'larry'];
+  // ['moe', 'groucho'];
   _.intersection = function() {
+    var result = [];
+    for (var i = 0; i < arguments.length; i++) {
+      var currentArr = arguments[i];
+      for (var j = 0; j < currentArr.length; j++) {
+        var currentTarget = currentArr[j];
+        var counter = 1;
+        for (var k = i + 1; k < arguments.length; k++) {
+          if (_.contains(arguments[k], currentTarget)) {   
+            counter++;
+          }
+        }
+        if (counter === arguments.length) {
+          result.push(currentTarget);
+        }
+      }
+    }
+    return result;
   };
 
   // Take the difference between one array and a number of other arrays.
