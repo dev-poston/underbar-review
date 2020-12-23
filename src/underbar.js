@@ -501,7 +501,7 @@
         var currentTarget = currentArr[j];
         var counter = 1;
         for (var k = i + 1; k < arguments.length; k++) {
-          if (_.contains(arguments[k], currentTarget)) {   
+          if (_.contains(arguments[k], currentTarget)) {
             counter++;
           }
         }
@@ -515,7 +515,18 @@
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
+
+  //[1, 2, 3, 4], [2, 30, 40], [1, 11, 111]
+  //[3, 4]
   _.difference = function(array) {
+    for (var i = 1; i < arguments.length; i++) {
+      for (var j = 0; j < arguments[i].length; j++) {
+        if (_.contains(array, arguments[i][j])) {
+          array.splice(_.indexOf(array, arguments[i][j]), 1);
+        }
+      }
+    }
+    return array;
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
@@ -524,5 +535,14 @@
   //
   // Note: This is difficult! It may take a while to implement.
   _.throttle = function(func, wait) {
+    var last = 0;
+    return function() {
+      var now = Date().getTime();
+      if ((now - last) < wait) {
+        return;
+      }
+      last = now;
+      return func();
+    };
   };
 }());
